@@ -4,4 +4,3 @@ import AuthService from "../services/auth.service"
 const Usermanagement = () => {}
 
 export default Usermanagement
-//SD
