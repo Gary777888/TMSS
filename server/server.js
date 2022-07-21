@@ -20,6 +20,11 @@ app.get("/", (req, res) => {
 })
 require("./routes/auth.route")(app)
 require("./routes/user.route")(app)
+require("./routes/usermanagement.route")(app)
+require("./routes/usergroups.route")(app)
+require("./routes/application.route")(app)
+require("./routes/plan.route")(app)
+require("./routes/task.route")(app)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 2000

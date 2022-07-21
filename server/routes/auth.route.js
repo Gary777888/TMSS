@@ -7,6 +7,6 @@ module.exports = function (app) {
     next()
   })
 
-  app.post("/api/auth/signup", [verifySignUp.checkDuplicateUsernameOrEmail /* , verifySignUp.checkUsergroupExisted */], controller.signup)
+  app.post("/api/auth/signup", [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.CheckPassword], controller.signup)
   app.post("/api/auth/signin", controller.signin)
 }

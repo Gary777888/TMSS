@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const config = require("../config/auth.config.js")
 const db = require("../models")
 const User = db.user
+const Application = db.application
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"]
@@ -22,11 +23,67 @@ verifyToken = (req, res, next) => {
   })
 }
 
-isAdmin = (req, res, next) => {
-  User.findByPk(req.username).then((user) => {
-    /* something */
+checkgroup = async (username, usergroup) => {
+  return await User.findOne({
+    where: {
+      username: username,
+    },
+  }).then((user) => {
+    let group = user.usergroup
+    if (group.includes(usergroup) == true) {
+      return true
+    } else {
+      return false
+    }
+  })
+}
 
-    if (user.usergroup.includes("admin")) {
+isCreate = (req, res, next) => {
+  // const username = req.params.username
+
+  User.findByPk(req.username).then(async (user) => {
+    console.log("user variables", user)
+    Application.findOne({ where: { app_acronym: req.params.app_acronym } }).then(async (app) => {
+      if ((await checkgroup(user.username, app.app_permit_Create)) == true) {
+        next()
+        return
+      } else {
+        res.status(403).send({
+          message: "Required Authorized User!",
+        })
+      }
+    })
+    return
+  })
+}
+
+// // Edit User
+// exports.findOne = (req, res) => {
+//   const username = req.params.username
+//   User.findByPk(username)
+//     .then((data) => {
+//       if (data) {
+//         res.send(data)
+//       } else {
+//         res.status(404).send({
+//           message: `Cannot find username=${username}.`,
+//         })
+//       }
+//     })
+//     .catch((err) => {
+//       res.status(500).send({
+//         message: "Error retrieving username=" + username,
+//       })
+//     })
+// }
+
+isAdmin = (req, res, next) => {
+  const username = req.params.username
+  console.log(username)
+  User.findByPk(username).then(async (user) => {
+    const result = await checkgroup(user.username, "admin")
+
+    if (result === true) {
       next()
       return
     } else {
@@ -35,26 +92,14 @@ isAdmin = (req, res, next) => {
       })
       return
     }
-
-    // user.getAdmingroup().then((usergroup) => {
-    //   for (let i = 0; i < usergroup.length; i++) {
-    //     if (usergroup[i].name === "admin") {
-    //       next()
-    //       return
-    //     }
-    //   }
-    //   res.status(403).send({
-    //     message: "Require Admin Role!",
-    //   })
-    return
-    // })
   })
 }
-isUser = (req, res, next) => {
-  User.findByPk(req.username).then((user) => {
-    // something
 
-    if (user.usergroup.includes("user")) {
+isUser = (req, res, next) => {
+  User.findByPk(req.username).then(async (user) => {
+    const result = await checkgroup(user.username, "user")
+
+    if (result === true) {
       next()
       return
     } else {
@@ -63,17 +108,39 @@ isUser = (req, res, next) => {
       })
       return
     }
-    // user.getUsergroup().then((usergroup) => {
-    //   for (let i = 0; i < usergroup.length; i++) {
-    //     if (usergroup[i].name === "user") {
-    //       next()
-    //       return
-    //     }
-    //   }
-    //   res.status(403).send({
-    //     message: "Require User Role!",
-    //   })
-    // })
+  })
+}
+
+isProjectLeader = (req, res, next) => {
+  // const username = req.params.username
+  User.findByPk(req.username).then(async (user) => {
+    const result = await checkgroup(user.username, "project leader")
+
+    if (result === true) {
+      next()
+      return
+    } else {
+      res.status(403).send({
+        message: "Required Project Leader Role!",
+      })
+      return
+    }
+  })
+}
+
+isProjectManager = (req, res, next) => {
+  User.findByPk(req.username).then(async (user) => {
+    const result = await checkgroup(user.username, "project manager")
+
+    if (result === true) {
+      next()
+      return
+    } else {
+      res.status(403).send({
+        message: "Required Project Manager Role!",
+      })
+      return
+    }
   })
 }
 
@@ -81,5 +148,8 @@ const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isUser: isUser,
+  isProjectLeader: isProjectLeader,
+  isProjectManager: isProjectManager,
+  isCreate: isCreate,
 }
 module.exports = authJwt

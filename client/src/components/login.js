@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import AuthService from "../services/auth.service"
-import Form from "react-validation/build/form"
+import logo from "./account.png"
 
 const required = (value) => {
   if (!value) {
@@ -57,11 +57,11 @@ const Login = () => {
   return (
     <div>
       <div className="card card-container">
-        <Form>
-          <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile-img" className="profile-img-card" />
-          <h4 style={{ textAlign: "left" }}>Username</h4>
+        <div>
+          <img src={logo} style={{ height: 200 }} alt="Logo" />
+          <h4>Username</h4>
           <input type="username" onChange={onChangeUsername} />
-          <h2>Password</h2>
+          <h4>Password</h4>
           <input type="password" onChange={onChangePassword} />
           <br />
           <br />
@@ -73,7 +73,7 @@ const Login = () => {
             </div>
           )}
           <button onClick={handleLogin}>Login</button>
-        </Form>
+        </div>
       </div>
     </div>
   )

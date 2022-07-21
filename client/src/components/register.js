@@ -1,5 +1,7 @@
-import React, { useState } from "react"
 import AuthService from "../services/auth.service"
+import logo from "./account.png"
+import React, { useState, useEffect } from "react"
+import UserGroups from "../services/usergroups.service"
 
 // Import select components
 // import InputLabel from "@mui/material/InputLabel"
@@ -55,6 +57,27 @@ const Register = () => {
   const [message, setMessage] = useState("")
   const [successful, setSuccessful] = useState(false)
   const [check, setCheck] = useState(false)
+  const [usergroups, setusergroups] = useState([])
+
+  useEffect(() => {
+    getAllusergroups()
+  }, [])
+
+  const getAllusergroups = () => {
+    UserGroups.getUsergroups()
+      .then((response) => {
+        console.log("res", response)
+        const usergroups = []
+        for (let i = 0; i < response.data.length; i++) {
+          usergroups.push(response.data[i].name)
+        }
+        console.log("s", usergroups)
+        setusergroups(usergroups)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
 
   const onChangeUsername = (e) => {
     const username = e.target.value
@@ -100,6 +123,10 @@ const Register = () => {
           setMessage(response.data.message)
           console.log("Account created!")
           setCheck(false)
+
+          setTimeout(function () {
+            window.location.reload()
+          }, 1000)
         },
         (error) => {
           const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -115,28 +142,34 @@ const Register = () => {
 
   return (
     <div>
-      <h1>Register User</h1>
-      <h2>Username</h2>
-      <input onChange={onChangeUsername}></input>
-      <h2>Password</h2>
-      <input type="password" onBlur={onBlurPassword} onChange={onChangePassword}></input>
-      <h2>Email</h2>
-      <input onChange={onChangeEmail}></input>
-      <h2>Usergroup</h2>
-      <select onChange={onChangeUsergroup}>
-        <option value="admin">Admin</option>
-        <option value="user">User</option>
-      </select>
-      <br />
-      <br />
-      {message && (
-        <div className="form-group">
-          <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-            {message}
-          </div>
+      <div className="card card-container">
+        <div>
+          <img src={logo} style={{ height: 200 }} alt="Logo" />
+          <h4>Username</h4>
+          <input onChange={onChangeUsername}></input>
+          <h4>Password</h4>
+          <input type="password" onBlur={onBlurPassword} onChange={onChangePassword}></input>
+          <h4>Email</h4>
+          <input onChange={onChangeEmail}></input>
+          <h4>Usergroup</h4>
+          <select onChange={onChangeUsergroup}>
+            <option></option>
+            {usergroups.map((item) => (
+              <option>{item}</option>
+            ))}
+          </select>
+          <br />
+          <br />
+          {message && (
+            <div className="form-group">
+              <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                {message}
+              </div>
+            </div>
+          )}
+          <button onClick={handleRegister}>Create Account</button>
         </div>
-      )}
-      <button onClick={handleRegister}>Create Account</button>
+      </div>
     </div>
   )
 }

@@ -1,7 +1,6 @@
 const db = require("../models")
 const config = require("../config/auth.config")
 const User = db.user
-const Usergroups = db.usergroup
 
 var jwt = require("jsonwebtoken")
 var bcrypt = require("bcrypt")
@@ -29,11 +28,16 @@ exports.signin = (req, res) => {
   User.findOne({
     where: {
       username: req.body.username,
+      // status: "active",
     },
   }).then((user) => {
     if (!user) {
       return res.status(404).send({ message: "User not found." })
     }
+    if (user.status != "active") {
+      return res.status(401).send({ message: "User is unauthorised." })
+    }
+
     var passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
     if (!passwordIsValid) {
       return res.status(401).send({

@@ -19,7 +19,21 @@ db.sequelize = sequelize
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize)
 db.usergroup = require("../models/usergroup.model.js")(sequelize, Sequelize)
+db.application = require("../models/application.model.js")(sequelize, Sequelize)
+db.plan = require("../models/plan.model.js")(sequelize, Sequelize)
+db.task = require("../models/task.model.js")(sequelize, Sequelize)
 
-db.USERGROUP = ["admin", "user"] //roles from the usergroup table
+// db.application.hasMany(db.plan, {
+//   foreignKey: 'plan_app_acronym',
+//   sourceKey: 'app_acronym'
+// });
+// db.plan.belongsTo(db.application);
+
+// db.application.hasMany(db.task, {
+//   foreignKey: 'plan_app_acronym',
+//   sourceKey: 'app_acronym'
+// });
+
+db.USERGROUP = ["admin", "project leader", "project manager", "team member", "user"] //roles from the usergroup table
 
 module.exports = db

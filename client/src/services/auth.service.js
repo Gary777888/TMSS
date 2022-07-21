@@ -21,6 +21,8 @@ const login = (username, password) => {
       console.log("responds", response)
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data))
+        console.log("res", response.data)
+        localStorage.setItem("usergroup", response.data.usergroup)
       }
       return response.data
     })
