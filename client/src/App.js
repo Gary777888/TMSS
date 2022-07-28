@@ -29,20 +29,9 @@ function App() {
   const [showUserBoard, setshowUserBoard] = useState(false)
   const [showProjectLeader, setshowProjectLeader] = useState(false)
   const [showAllUsers, setshowAllUsers] = useState(false)
-  // const componentDidMount = () => {
-  //   const user = AuthService.getCurrentUser()
-  //   console.log(user)
-
-  //   if (user) {
-  //     setCurrentUser(currentUser)
-  //      showAdminBoard= user.usergroup.includes("admin")
-  //     setshowAdminBoard(showAdminBoard)
-  //   }
-  // }
 
   useEffect(() => {
     const user = AuthService.getCurrentUser()
-    // console.log(user)
     if (user) {
       setCurrentUser(user)
       UserManagement.get(user.username).then((response) => {
@@ -55,9 +44,6 @@ function App() {
 
   const logOut = () => {
     AuthService.logout()
-    // setshowAdminBoard(false)
-    // setshowUserBoard(false)
-    //setCurrentUser(false)
   }
 
   return (
@@ -73,22 +59,6 @@ function App() {
                 Home
               </Link>
             </li>
-
-            {/* {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin
-                </Link>
-              </li>
-            )}
-
-            {showUserBoard && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
-                </Link>
-              </li>
-            )} */}
 
             {showAllUsers && (
               <li className="nav-item">
@@ -160,8 +130,6 @@ function App() {
           <Route exact path="/registerpage" element={<Register />} />
           <Route exact path="/loginpage" element={<Login />} />
           <Route exact path="/profile/:username" element={<Profile />} />
-          {/* <Route exact path="/admin" element={<Admin />} /> */}
-          {/* <Route exact path="/user" element={<User />} /> */}
           <Route exact path="/usermanagement" element={<UsermanagementList />} />
           <Route exact path="/edituser/:username" element={<Edituser />} />
           <Route exact path="/editprofile/:username" element={<Editprofile />} />

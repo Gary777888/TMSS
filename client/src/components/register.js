@@ -1,53 +1,9 @@
-import AuthService from "../services/auth.service"
 import logo from "./account.png"
 import React, { useState, useEffect } from "react"
+
+//import services
+import AuthService from "../services/auth.service"
 import UserGroups from "../services/usergroups.service"
-
-// Import select components
-// import InputLabel from "@mui/material/InputLabel"
-// import MenuItem from "@mui/material/MenuItem"
-// import FormControl from "@mui/material/FormControl"
-// import Select, { SelectChangeEvent } from "@mui/material/Select"
-
-// const required = (value) => {
-//   if (!value) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         This field is required!!!
-//       </div>
-//     )
-//   }
-// }
-
-// const validEmail = (value) => {
-//   if (!value) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         This is not a valid email.
-//       </div>
-//     )
-//   }
-// }
-
-// const vusername = (value) => {
-//   if (!value) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         The username must be filled.
-//       </div>
-//     )
-//   }
-// }
-
-// const vpassword = (value) => {
-//   if (value.length < 8 || value.length > 10) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         The password must be between 8 and 10 characters.
-//       </div>
-//     )
-//   }
-// }
 
 const Register = () => {
   const [username, setUsername] = useState("")

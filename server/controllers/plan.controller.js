@@ -1,3 +1,4 @@
+//import models
 const db = require("../models")
 const Plan = db.plan
 const Application = db.application

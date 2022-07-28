@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from "react"
+import React, { useState, useEffect } from "react"
 import Application from "../services/application.service"
 import AuthService from "../services/auth.service"
 import UserManagement from "../services/usermanagement.service"
 import Task from "../services/task.service"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router"
-import { useTable } from "react-table"
-import { useNavigate } from "react-router"
-import App from "../App"
 
 // import task component
 import Container from "react-bootstrap/Container"
@@ -17,20 +14,11 @@ import Card from "./Card"
 
 const ViewApp = () => {
   const { app_acronym } = useParams()
-  const [message, setMessage] = useState("")
-  const [successful, setSuccessful] = useState(false)
   const [currentApp, setCurrentApp] = useState("")
-  const [currentnewApp, setCurrentnewApp] = useState("")
   const [showProjectManager, setshowProjectManager] = useState(false)
   const [showProjectLeader, setshowProjectLeader] = useState(false)
   const [tasks, setTasks] = useState([])
-  const [showAppPermit_Open, setshowAppPermit_Open] = useState(false)
-  const [showAppPermit_toDoList, setshowAppPermit_toDoList] = useState(false)
-  const [showAppPermit_Doing, setshowAppPermit_Doing] = useState(false)
-  const [showAppPermit_Done, setshowAppPermit_Done] = useState(false)
-  const [showAppPermit_Create, setshowAppPermit_Create] = useState(false)
   const [group, setGroup] = useState(localStorage.getItem("usergroup").split(","))
-  console.log("testing", group)
   useEffect(() => {
     const user = AuthService.getCurrentUser()
     getApplication(app_acronym)
@@ -65,8 +53,6 @@ const ViewApp = () => {
         console.log(e)
       })
   }
-  console.log(currentApp.app_permit_Create)
-  console.log(group)
   return (
     <div>
       {currentApp ? (
@@ -103,7 +89,7 @@ const ViewApp = () => {
                 <Row>
                   <Col>
                     {tasks
-                      .filter((taskList) => taskList.task_state == "Open")
+                      .filter((taskList) => taskList.task_state === "Open")
                       .map((tasks) => {
                         return (
                           <div>
@@ -114,43 +100,34 @@ const ViewApp = () => {
                   </Col>
                   <Col>
                     {tasks
-                      .filter((taskList) => taskList.task_state == "To Do")
+                      .filter((taskList) => taskList.task_state === "To Do")
                       .map((tasks) => {
                         return <Card data={tasks} setCurrentApp={setCurrentApp} showedit={group.includes(currentApp.app_permit_toDoList) ? true : false} showRight={group.includes(currentApp.app_permit_toDoList) ? true : false} />
                       })}
                   </Col>
                   <Col>
                     {tasks
-                      .filter((taskList) => taskList.task_state == "Doing")
+                      .filter((taskList) => taskList.task_state === "Doing")
                       .map((tasks) => {
                         return <Card data={tasks} setCurrentApp={setCurrentApp} showedit={group.includes(currentApp.app_permit_Doing) ? true : false} showRight={group.includes(currentApp.app_permit_Doing) ? true : false} showLeft={group.includes(currentApp.app_permit_Doing) ? true : false} />
                       })}
                   </Col>
                   <Col>
                     {tasks
-                      .filter((taskList) => taskList.task_state == "Done")
+                      .filter((taskList) => taskList.task_state === "Done")
                       .map((tasks) => {
                         return <Card data={tasks} setCurrentApp={setCurrentApp} showedit={group.includes(currentApp.app_permit_Done) ? true : false} showRight={group.includes(currentApp.app_permit_Done) ? true : false} showLeft={group.includes(currentApp.app_permit_Done) ? true : false} />
                       })}
                   </Col>
                   <Col>
                     {tasks
-                      .filter((taskList) => taskList.task_state == "Close")
+                      .filter((taskList) => taskList.task_state === "Close")
                       .map((tasks) => {
                         return <Card data={tasks} setCurrentApp={setCurrentApp} />
                       })}
                   </Col>
                 </Row>
               </Container>
-              {/* {tasks.map((doc) => {
-                return (
-                  <li>
-                    {doc.task_name}
-                    {doc.task_description}
-                    {doc.task_notes}
-                  </li>
-                )
-              })} */}
             </div>
           </div>
         </div>

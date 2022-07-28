@@ -1,5 +1,5 @@
+//import models
 const db = require("../models")
-const User = db.user
 const UserGroup = db.usergroup
 
 // Retrieve all usergroups from usergroup table
@@ -28,8 +28,6 @@ exports.newusergroup = (req, res) => {
 //Update usergroup status
 exports.usergroupstatus = async (req, res) => {
   const name = req.params.name
-  console.log(name, "name")
-  console.log(req.body, "ALL REQ.BODY")
 
   const group = await UserGroup.findOne({ where: { name: name } })
   if (group.status === req.body.status) {

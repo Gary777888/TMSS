@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from "react"
 import Application from "../services/application.service"
 import AuthService from "../services/auth.service"
 import UserManagement from "../services/usermanagement.service"
-import { Link } from "react-router-dom"
-import { useParams } from "react-router"
 import { useTable } from "react-table"
 import { useNavigate } from "react-router"
 
@@ -32,7 +30,6 @@ const ApplicatonList = () => {
     Application.getallapplications()
       .then((response) => {
         setApplication(response.data)
-        console.log(application)
       })
       .catch((e) => {
         console.log(e)
@@ -46,10 +43,6 @@ const ApplicatonList = () => {
 
     navigate("/application/viewApp/" + app_acronym)
   }
-
-  // function handleCreate(username) {
-  //   navigate("/application/" + username)
-  // }
 
   function handleEdit(app_acronym) {
     navigate("/application/editApp/" + app_acronym)
@@ -108,7 +101,6 @@ const ApplicatonList = () => {
 
       {
         Header: "Actions",
-        // accessor: "actions",
       },
     ],
     []
@@ -122,13 +114,7 @@ const ApplicatonList = () => {
   return (
     <div className="list row">
       <div className="col-md-8">
-        <div className="input-group mb-3" style={{ justifyContent: "center", alignItems: "center", width: "140%" }}>
-          {/* {showProjectLeader && (
-            <button style={{ width: "150px", fontSize: "25px", backgroundColor: "orange" }} onClick={(e) => handleCreate(currentUser.username)}>
-              Create App
-            </button>
-          )} */}
-        </div>
+        <div className="input-group mb-3" style={{ justifyContent: "center", alignItems: "center", width: "140%" }}></div>
       </div>
       <div className="col-md-12 list">
         <table className="table table-striped table-bordered" {...getTableProps()}>

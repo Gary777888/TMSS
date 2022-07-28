@@ -1,6 +1,6 @@
 //This file is to verify the user (check whether any duplication of username or email, check whether role exist)
-//Signup (POST): No.1
-const { application } = require("../models")
+//import models
+// const { application } = require("../models")
 const db = require("../models")
 const User = db.user
 const Application = db.application
@@ -19,19 +19,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
       })
       return
     }
-    // //Password
-    // User.findOne({
-    //   where: {
-    //     password: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,10}$/,
-    //   },
-    // }).then((user) => {
-    //   if (user) {
-    //     res.status(400).send({
-    //       message: "Failed! Password does not met the requirement!!",
-    //     })
-    //     return
-    //   }
-    // })
+
     // Email
     User.findOne({
       where: {

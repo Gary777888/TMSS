@@ -1,6 +1,9 @@
+//import models
 const db = require("../models")
-const config = require("../config/auth.config")
 const User = db.user
+
+//import config
+const config = require("../config/auth.config")
 
 var jwt = require("jsonwebtoken")
 var bcrypt = require("bcrypt")
@@ -15,11 +18,6 @@ exports.signup = (req, res) => {
     status: "active",
   }).then(() => {
     res.send({ message: "Account created!!!" })
-    // if ((Usergroups.name = "admin")) {
-    //   res.send({ message: "Admin account created" })
-    // } else if ((Usergroups.name = "user")) {
-    //   res.send({ message: "User account created" })
-    // }
   })
 }
 
@@ -28,7 +26,6 @@ exports.signin = (req, res) => {
   User.findOne({
     where: {
       username: req.body.username,
-      // status: "active",
     },
   }).then((user) => {
     if (!user) {

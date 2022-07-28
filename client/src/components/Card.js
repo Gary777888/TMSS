@@ -4,15 +4,12 @@ import Task from "../services/task.service"
 import Plans from "../services/plan.service"
 import { useParams } from "react-router"
 import Application from "../services/application.service"
-import AuthService from "../services/auth.service"
 
 // Import pop up form
 import Button from "@mui/material/Button"
-import TextField from "@mui/material/TextField"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 
 const Card = (props) => {
@@ -55,9 +52,6 @@ const Card = (props) => {
           plans.push(response.data[i].plan_MVP_name)
         }
         setplans(plans)
-
-        // setCurrentNewUser(response.data)
-        // planstatus(response.data)
       })
       .catch((e) => {
         console.log(e)
@@ -192,48 +186,14 @@ const Card = (props) => {
           )}
         </>
       )
-
-      // <FaAngleDoubleRight
-      //   onClick={() => {
-      //     Task.forwardTask(task)
-      //     window.location.reload()
-      //   }}
-      // />
-
-      //  <button>
-      //     <FaAngleDoubleLeft
-      //       onClick={() => {
-      //         Task.reverseTask(task)
-      //         window.location.reload()
-      //       }}
-      //     />
-      //     <FaAngleDoubleRight
-      //       onClick={() => {
-      //         Task.forwardTask(task)
-      //         window.location.reload()
-      //       }}
-      //     />
-      //   </button>
     }
   }
-  console.log(props.showRight)
+
   return (
     <div className="cardContainer">
       <div className="cardHeader"> Task name: {props.data.task_name}</div>
-      {/* <div className="cardContent">
-        <p> Description: {props.data.task_description}</p>
-        <p> Plan: {props.data.task_plan}</p>
-        <p> App_acronym: {props.data.task_app_acronym} </p>
-      </div> */}
       <div className="cardFooter">
-        {/* creator: {props.data.task_creator}
-        <p> State: {props.data.task_state}</p> */}
         <p>Owner: {props.data.task_owner}</p>
-        {/* <p>Create Date: {props.data.task_createDate}</p>
-        <div>
-          Notes:
-          <p className="scrollableContainer">{props.data.task_notes}</p>
-        </div> */}
         {props.showedit && (
           <Button className="cardIcn" onClick={handleClickOpen}>
             <FaRegEdit color="black" fontSize="1.5em" />

@@ -22,7 +22,6 @@ checkDuplicateUsergroup = (req, res, next) => {
 
 const checkUsergroup = {
   checkDuplicateUsergroup: checkDuplicateUsergroup,
-  // checkUsergroupExisted: checkUsergroupExisted,
-  // CheckPassword: CheckPassword,
 }
+
 module.exports = checkUsergroup

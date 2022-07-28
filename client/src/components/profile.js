@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react"
-import AuthService from "../services/auth.service"
 import { Link } from "react-router-dom"
-import UserManagement from "../services/usermanagement.service"
 import { useParams } from "react-router"
+
+//import services
+import UserManagement from "../services/usermanagement.service"
 
 const Profile = () => {
   const { username } = useParams()
   const [currentUser, setCurrentUser] = useState("")
-  // const currentUser = UserManagement.get()
-  // const currentUser = AuthService.getCurrentUser()
 
   useEffect(() => {
     getProfileUser(username)
@@ -24,14 +23,6 @@ const Profile = () => {
         console.log(e)
       })
   }
-
-  // function handleEdit(username) {
-  //   navigate("/profile/editprofile/" + username)
-  // }
-
-  // useEffect(() => {
-  //   navigate(handleEdit(currentUser.username))
-  // }, [])
 
   return (
     <div>

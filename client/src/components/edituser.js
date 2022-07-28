@@ -27,8 +27,6 @@ const Edituser = () => {
           usergroup.push(response.data[i].name)
         }
         setUsergroup(usergroup)
-        // setCurrentNewUser(response.data)
-        // userstatus(response.data)
       })
       .catch((e) => {
         console.log(e)
@@ -38,38 +36,17 @@ const Edituser = () => {
   // Return classes based on whether item is checked
   const isChecked = (item) => (checked.includes(item) ? "checked-item" : "not-checked-item")
 
-  // const [checkedState, setCheckedState] = useState(new Array(getAllUserGroups.length).fill(false))
-
-  // const usergroupOnChange = (position) => {
-  //   const updatedCheckedState = checkedState.map((item, index) => (index === position ? !item : item))
-
-  //   setCheckedState(updatedCheckedState)
-  // }
   const getUser = async (username) => {
     await UserManagement.get(username)
       .then((response) => {
         setCurrentNewUser(response.data)
         setCurrentUser(response.data)
-        // userstatus(response.data)
-        console.log(response.data.status)
         console.log(response.data)
       })
       .catch((e) => {
         console.log(e)
       })
   }
-
-  // const getUser2 = (username) => {
-  //   UserManagement.get(username)
-  //     .then((response) => {
-  //       setCurrentUser(response.data)
-  //       userstatus(response.data)
-  //       console.log(response.data)
-  //     })
-  //     .catch((e) => {
-  //       console.log(e)
-  //     })
-  // }
 
   const onChangeStatus = (e) => {
     const { name, value } = e.target
@@ -85,12 +62,10 @@ const Edituser = () => {
       updatedList.splice(checked.indexOf(event.target.value), 1)
     }
     setChecked(updatedList)
-    console.log(checked)
   }
 
   const updateUser = async (e) => {
     e.preventDefault()
-    console.log(checked == "")
     if (checked == "") {
       currentNewUser.usergroup = currentUser.usergroup
     } else {
@@ -100,26 +75,11 @@ const Edituser = () => {
       console.log(grpString)
       currentNewUser.usergroup = grpString
     }
-
-    console.log(currentNewUser.status)
-    // if (status == false) {
-    //   currentNewUser.status = "active"
-    // }
-    // setCheck(true)
-    // if (check === true) {
-    // setMessage("")
-    // setSuccessful(false)
-    // console.log(check)
-    // if (check === true) {
-    console.log(currentNewUser.password)
     if (password == false) {
-      console.log("false")
       currentNewUser.password = "none"
     }
-    console.log(currentNewUser, "CURRENT")
     UserManagement.update(currentNewUser.username, currentNewUser).then(
       (response) => {
-        console.log(response.data)
         setSuccessful(true)
         setCheck(false)
         setMessage(response.data.message)
@@ -135,14 +95,6 @@ const Edituser = () => {
         setCheck(false)
       }
     )
-    // .catch((e) => {
-    //   console.log(e)
-    //   setSuccessful(false)
-    //   setCheck(false)
-    // })
-    // } else {
-    //   alert("Password does not meet the requirements!")
-    // }
   }
 
   const changePassword = (e) => {
@@ -153,19 +105,9 @@ const Edituser = () => {
     }
   }
 
-  // const userstatus = (response) => {
-  //   var Status = []
-  // }
-
-  // useEffect(() => {
-  //   getUser(username)
-  //   // getUser2(username)
-  // }, [])
-
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setCurrentNewUser({ ...currentNewUser, [name]: value })
-    // console.log(currentNewUser)
   }
 
   const onBlurPassword = (e) => {

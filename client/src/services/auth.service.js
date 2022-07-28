@@ -18,10 +18,9 @@ const login = (username, password) => {
       password,
     })
     .then((response) => {
-      console.log("responds", response)
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data))
-        console.log("res", response.data)
+        // console.log("res", response.data)
         localStorage.setItem("usergroup", response.data.usergroup)
       }
       return response.data
@@ -36,9 +35,6 @@ const logout = () => {
   localStorage.removeItem("user")
 }
 
-// const getCurrentUser = () => {
-//   return JSON.parse(localStorage.getItem("user"))
-// }
 const AuthService = {
   register,
   login,

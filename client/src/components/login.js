@@ -1,17 +1,9 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import AuthService from "../services/auth.service"
 import logo from "./account.png"
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    )
-  }
-}
+//import services
+import AuthService from "../services/auth.service"
 
 const Login = () => {
   const [username, setUsername] = useState("")
@@ -20,10 +12,6 @@ const Login = () => {
   const [successful, setSuccessful] = useState(false)
 
   const navigate = useNavigate()
-
-  // function validationForm() {
-  //   return email.length > 0
-  // }
 
   const onChangeUsername = (e) => {
     const username = e.target.value
@@ -37,11 +25,8 @@ const Login = () => {
 
   const handleLogin = (req, res) => {
     setMessage("")
-    // setSuccessful(false)
     AuthService.login(username, password).then(
-      (response) => {
-        // setSuccessful(true)
-
+      () => {
         console.log("Login success!")
         navigate("/home")
         window.location.reload()
@@ -49,7 +34,6 @@ const Login = () => {
       (error) => {
         const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         setMessage(resMessage)
-        // setSuccessful(false)
       }
     )
   }

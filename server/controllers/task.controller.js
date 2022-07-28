@@ -1,9 +1,12 @@
+//import models
 const db = require("../models")
 const Task = db.task
 const Application = db.application
+const Plan = db.plan
 const User = db.user
-const nodemailer = require("nodemailer")
 const { Sequelize } = require("../models")
+
+const nodemailer = require("nodemailer")
 
 let temparray = []
 let sender = []
@@ -41,9 +44,9 @@ async function email(sender, reciever, taskId) {
   let info = await transporter.sendMail({
     from: sender, // sender address
     to: reciever, // list of receivers
-    subject: `Task ${taskId} State updated from Doing to Done`, // Subject line
-    text: "Task State updated from Doing to Done", // plain text body
-    html: "<b>Task State updated from Doing to Done</b>", // html body
+    subject: `Task ID: ${taskId}, Task State updated from Doing to Done`, // Subject line
+    text: "Hello, the task is completed. See you all", // plain text body
+    html: "<b>Task Completed, Task State updated from Doing to Done</b>", // html body
   })
 }
 
@@ -64,7 +67,6 @@ exports.createTask = (req, res) => {
         message: `Cannot find app_acronym=${app_acronym}.`,
       })
     } else {
-      console.log(req.body, ".........................................................")
       Task.create({
         task_name: req.body.task_name,
         task_description: req.body.task_description,
@@ -82,7 +84,6 @@ exports.createTask = (req, res) => {
       // Update App's Rnumber
       Application.findByPk(app_acronym).then(() => {
         const appRnumber = app.app_Rnumber + 1
-        console.log(appRnumber)
         Application.update(
           {
             app_Rnumber: appRnumber,
@@ -119,7 +120,6 @@ exports.findallTasks = (req, res) => {
 
 // Change forward state
 exports.forwardState = (req, res) => {
-  console.log("HI", req.body)
   const d_t = new Date()
 
   let year = d_t.getFullYear()
@@ -128,7 +128,7 @@ exports.forwardState = (req, res) => {
   let hour = d_t.getHours()
   let minute = d_t.getMinutes()
   let seconds = d_t.getSeconds()
-  console.log(req.body.task_owner)
+
   Task.findByPk(req.body.task.task_id).then((task) => {
     switch (req.body.task.task_state) {
       case "Open": {
@@ -315,7 +315,6 @@ exports.updateTask = (req, res) => {
   let minute = d_t.getMinutes()
   let seconds = d_t.getSeconds()
 
-  console.log("the requst is", req.body)
   Task.findByPk(req.body.task_id)
     .then((task) => {
       if (req.body.task_plan == "" && req.body.task_description == "" && req.body.task_notes !== "") {
@@ -467,4 +466,137 @@ exports.updateTask = (req, res) => {
         message: "Error updating Task with Task ID=" + req.body.task_id,
       })
     })
+}
+
+//Assignment 3 (Create Task)
+exports.createTaskAssig3 = (req, res) => {
+  const app_acronym = req.params.app_acronym
+  const username = req.params.username
+
+  const d_t = new Date()
+
+  let year = d_t.getFullYear()
+  let month = ("0" + (d_t.getMonth() + 1)).slice(-2)
+  let day = ("0" + d_t.getDate()).slice(-2)
+  let hour = d_t.getHours()
+  let minute = d_t.getMinutes()
+  let seconds = d_t.getSeconds()
+
+  Application.findByPk(app_acronym).then((app) => {
+    if (!app) {
+      res.status(501).send({
+        message: "Error code: 501",
+      })
+    } else {
+      Plan.findOne({ where: { plan_app_acronym: app_acronym, plan_MVP_name: req.body.task_plan } }).then((plan) => {
+        if (!plan && req.body.task_plan !== "") {
+          return res.status(502).send({ message: "Error code: 502" })
+        } else {
+          if (req.body.task_name === "") {
+            return res.status(500).send({ message: "Error code: 500" })
+          }
+          Task.create({
+            task_name: req.body.task_name,
+            task_description: req.body.task_description,
+            task_notes: year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds + " " + "Task created by " + req.body.task_creator + ". Current State: Open.",
+            task_id: app_acronym + "_" + app.app_Rnumber,
+            task_plan: req.body.task_plan,
+            task_app_acronym: app_acronym,
+            task_state: "Open",
+            task_creator: username,
+            task_owner: username,
+            task_createDate: year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds,
+          }).then(() => {
+            return res.status(200).send({ message: "Success Code: 200" })
+          })
+          // Update App's Rnumber
+          Application.findByPk(app_acronym).then(() => {
+            const appRnumber = app.app_Rnumber + 1
+            Application.update(
+              {
+                app_Rnumber: appRnumber,
+              },
+              { where: { app_acronym: app_acronym } }
+            )
+          })
+        }
+      })
+    }
+  })
+}
+
+//Assignment 3 (GetTaskbyState)
+exports.GetTaskbyState = (req, res) => {
+  const app_acronym = req.params.app_acronym
+  const task_state = req.params.task_state
+
+  Application.findByPk(app_acronym).then((app) => {
+    if (!app) {
+      res.status(501).send({
+        message: "Error code: 501",
+      })
+    } else {
+      let temparray = ["Success code: 210"]
+      Task.findAll({ where: { task_app_acronym: app_acronym, task_state: task_state } }).then((app) => {
+        temparray.push(app)
+        if (task_state === "Open") {
+          res.status(210).send(temparray)
+        } else if (task_state === "To Do") {
+          res.status(210).send(temparray)
+        } else if (task_state === "Doing") {
+          res.status(210).send(temparray)
+        } else if (task_state === "Done") {
+          res.status(210).send(temparray)
+        } else if (task_state === "Close") {
+          res.status(210).send(temparray)
+        } else {
+          return res.status(505).send({ message: "Error code: 505" })
+        }
+      })
+    }
+  })
+}
+
+//Promote tasks from doing to done (Assignment 3)
+exports.PromoteTask2Done = (req, res) => {
+  const task_id = req.params.task_id
+
+  const d_t = new Date()
+
+  let year = d_t.getFullYear()
+  let month = ("0" + (d_t.getMonth() + 1)).slice(-2)
+  let day = ("0" + d_t.getDate()).slice(-2)
+  let hour = d_t.getHours()
+  let minute = d_t.getMinutes()
+  let seconds = d_t.getSeconds()
+
+  Task.findOne({ where: { task_id: task_id } }).then((app) => {
+    if (app == null) {
+      return res.status(504).send({ message: "Error code: 504" })
+    } else if (app.task_state !== "Doing") {
+      return res.status(503).send({ message: "Error code: 503" })
+    } else {
+      Task.update(
+        {
+          task_notes: year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds + " " + req.params.username + "\ntask updated from state: Doing to state: Done" + "\n\n" + app.task_notes,
+          task_state: "Done",
+          task_owner: req.params.username,
+        },
+        { where: { task_id: task_id } }
+      ).then((num) => {
+        if (num == 1) {
+          findAllProjectleader()
+          User.findOne({
+            where: { username: req.params.username },
+          }).then((nice) => {
+            sender.push(nice.email)
+          })
+          email(sender, temparray, task_id)
+          return res.send({
+            message: "Success code: 220",
+          })
+        }
+      })
+    }
+  })
 }

@@ -22,7 +22,6 @@ const UsergroupList = () => {
     UserGroups.getUsergroups()
       .then((response) => {
         setusergroups(response.data)
-        console.log(usergroups)
       })
       .catch((e) => {
         console.log(e)
@@ -45,7 +44,6 @@ const UsergroupList = () => {
       (response) => {
         setSuccessful(true)
         setMessage(response.data.message)
-        console.log("Usergroup created")
         setTimeout(function () {
           window.location.reload()
         }, 3000)
@@ -76,7 +74,6 @@ const UsergroupList = () => {
 
       {
         Header: "Actions",
-        // accessor: "actions",
       },
     ],
     []
@@ -89,10 +86,8 @@ const UsergroupList = () => {
 
   const updateStatus = (name) => {
     setSuccessful(false)
-    console.log(usergroupstate.status)
     UserGroups.updatestatus(name, usergroupstate)
       .then((response) => {
-        console.log(response.data)
         setMessage(response.data.message)
         setSuccessful(true)
         setTimeout(function () {

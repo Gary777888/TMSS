@@ -1,9 +1,9 @@
+//import models
 const db = require("../models")
 const Application = db.application
 
 // Create an app
 exports.createApp = (req, res) => {
-  console.log("backend", req.body.app_startDate)
   Application.create({
     app_acronym: req.body.app_acronym,
     app_description: req.body.app_description,

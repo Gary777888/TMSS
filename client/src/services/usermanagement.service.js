@@ -22,7 +22,6 @@ const profile = (username) => {
 }
 
 const getprofile = (username) => {
-  console.log(API_URL + `profile/editprofile/${username}`)
   return axios.get(API_URL + `profile/editprofile/${username}`)
 }
 

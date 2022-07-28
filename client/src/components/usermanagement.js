@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from "react"
 import UserManagement from "../services/usermanagement.service"
 import { useTable } from "react-table"
 import { useNavigate } from "react-router"
-import { Link } from "react-router-dom"
 
 const UsermanagementList = () => {
   const navigate = useNavigate()
@@ -20,7 +19,6 @@ const UsermanagementList = () => {
     UserManagement.getAll()
       .then((response) => {
         setusermanagements(response.data)
-        console.log(usermanagements)
       })
       .catch((e) => {
         console.log(e)
@@ -59,13 +57,12 @@ const UsermanagementList = () => {
 
       {
         Header: "Actions",
-        // accessor: "actions",
       },
     ],
     []
   )
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+  const { getTableProps, getTableBodyProps, headerGroups } = useTable({
     columns,
     data: usermanagements,
   })

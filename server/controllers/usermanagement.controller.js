@@ -1,9 +1,10 @@
+//import models
 const db = require("../models")
 const User = db.user
 const UserGroup = db.usergroup
-var bcrypt = require("bcrypt")
 const { Sequelize } = require("../models")
-// const Op = db.Sequelize.Op
+
+var bcrypt = require("bcrypt")
 
 // Retrieve all Users from the user table.
 exports.findAll = (req, res) => {
@@ -110,13 +111,9 @@ exports.updatepassword = (req, res) => {
 // Update an User
 exports.update = (req, res) => {
   const username = req.params.username
-  console.log(req.body.password, "HERE")
   if (req.body.password == "none") {
     User.findByPk(username)
       .then((user) => {
-        // password = user.password
-        // console.log(password, "PASWORD")
-        console.log("hi")
         User.update(
           {
             email: req.body.email,
@@ -143,7 +140,6 @@ exports.update = (req, res) => {
         })
       })
   } else {
-    console.log(username, req.body, "I TYPE")
     User.update(
       {
         email: req.body.email,

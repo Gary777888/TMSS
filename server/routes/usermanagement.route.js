@@ -8,9 +8,6 @@ module.exports = (app) => {
   //Retrieve an user
   app.get("/api/edituser/:username", Usermanagement.findOne)
 
-  // //Update an user's password
-  // app.put("/api/edituserpassword/:username", [verifySignUp.CheckPassword], Usermanagement.updatepassword)
-
   //Update an user
   app.put("/api/edituser/:username", [verifySignUp.CheckPassword], Usermanagement.update)
 
@@ -18,10 +15,6 @@ module.exports = (app) => {
   app.get("/api/allusersgroup", Usermanagement.findAllUserGroups)
 
   //Retrieve an user to edit profile
-  // http://localhost:2000/api/profile/editprofile/:
-  // app.get("/api/profile/editprofile/:username", function (req, res) {
-  //   res.send("hi")
-  // })
   app.get("/api/profile/editprofile/:username", Usermanagement.findOne)
 
   //Update an user profile

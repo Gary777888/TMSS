@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import UserManagement from "../services/usermanagement.service"
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
 
 const Editprofile = () => {
   const { username } = useParams()
@@ -27,13 +27,8 @@ const Editprofile = () => {
       currentNewUser.password = "none"
     }
     e.preventDefault()
-    // setCheck(true)
-    // if (currentNewUser.length == 0) {
-    // if (check === true) {
-    console.log("user", currentNewUser)
     UserManagement.updateprofile(currentNewUser.username, currentNewUser).then(
       (response) => {
-        // console.log("HI", response.data)
         setSuccessful(true)
         setCheck(false)
         setMessage("The User was updated successfully!")
@@ -42,39 +37,13 @@ const Editprofile = () => {
         }, 1000)
       },
       (error) => {
-        console.log("joke", error)
         const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         setMessage(resMessage)
         setSuccessful(false)
         setCheck(false)
       }
     )
-    // }
-    // .catch((e) => {
-    //   console.log(e)
-    // })
-    // } else {
-    //   alert("Password does not meet the requirements!")
-    // }
   }
-
-  // const updateUserPassword = async (e) => {
-  //   e.preventDefault()
-  //   UserManagement.updateuserpassword(currentNewUser.username, currentNewUser).then(
-  //     (response) => {
-  //       console.log(response.data)
-  //       setSuccessful(true)
-  //       setCheck(false)
-  //       setMessage("The User was updated successfully!")
-  //     },
-  //     (error) => {
-  //       const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
-  //       setMessage(resMessage)
-  //       setSuccessful(false)
-  //       setCheck(false)
-  //     }
-  //   )
-  // }
 
   useEffect(() => {
     getProfileUser(username)
@@ -86,7 +55,6 @@ const Editprofile = () => {
     if (currentNewUser.length) {
       return
     }
-    // console.log(currentNewUser)
   }
 
   const onBlurPassword = (e) => {
@@ -99,9 +67,6 @@ const Editprofile = () => {
       setCheck(true)
       return true
     }
-  }
-  const style = {
-    "margin-left": "20px",
   }
 
   return (
@@ -119,9 +84,6 @@ const Editprofile = () => {
                 <b>Password: xxxxx </b>
               </h5>
               <input type="password" onBlur={onBlurPassword} id="password" name="password" onChange={handleInputChange}></input>
-              {/* <button style={style} onClick={(e) => updateUserPassword(e)}>
-                Update password
-              </button> */}
               <br /> <br /> <br />
               <h5 aria-readonly>
                 <b>Email: {currentUser.email}</b>
