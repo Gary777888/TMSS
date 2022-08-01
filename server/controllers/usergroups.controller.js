@@ -14,7 +14,7 @@ exports.findAllUserGroups = (req, res) => {
       })
     })
 }
-
+//
 //Create new usergroup
 exports.newusergroup = (req, res) => {
   UserGroup.create({
