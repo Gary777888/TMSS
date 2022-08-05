@@ -27,7 +27,8 @@ require("./routes/plan.route")(app)
 require("./routes/task.route")(app)
 
 // set port, listen for requests
-const PORT = process.env.PORT || 2000
+// const PORT = /* process.env.PORT || */ 4000
+const PORT = process.env.PORT
 
 db.sequelize.sync().then(() => {
   app.listen(PORT, () => {
